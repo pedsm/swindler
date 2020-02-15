@@ -1,4 +1,9 @@
-const { createRoom, joinRoom, getRoom } = require('./gameService')
+const { 
+  createRoom,
+  joinRoom,
+  getRoom,
+  startGame
+} = require('./gameService')
 const { log } = require('./log')
 
 const setupSocket = (io) => {
@@ -16,6 +21,13 @@ const setupSocket = (io) => {
       joinRoom(socket, name, code)
       socket.emit('gameState', getRoom(code))
       io.to(code).emit('gameState', getRoom(code))
+    })
+
+    //TURN 0
+
+    socket.on('startGame', ({ code }) => {
+      const gameState = startGame(code)
+      io.to(code).emit('gameState', gameState)
     })
 
 

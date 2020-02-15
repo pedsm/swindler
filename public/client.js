@@ -1,14 +1,11 @@
-const main = document.getElementById('main');
-let name;
+const main = document.getElementById('main')
+let gameState = {}
+let name
 
-// Let's connect to the server
-var socket = io.connect('/');
-// When we receive something in the welcome channel we...
-// socket.on('welcome', function (data) {
-//   console.log(data);
-// });
+var socket = io.connect('/')
 
-socket.on('gameState', (gameState) => {
+socket.on('gameState', (newState) => {
+  gameState = newState
   console.log('Receiving game state')
   console.table({roomCode: gameState.code, turn: gameState.turn})
   console.table(gameState.players)
@@ -17,9 +14,24 @@ socket.on('gameState', (gameState) => {
     <h1>Room Code: ${gameState.code}</h1>
     <h2>${name}</h2>
     <p>${gameState.players.map(player => player.name).join(',')}</p>
+    <input onclick="startGame()" id="startBt" type="submit" value="Start Game"/>
     `
+  } else {
+    main.innerHTML = `<h1>Not yet implemented</h1>`
+    console.error("I don't know how to render this")
+    console.log(gameState)
   }
 })
+
+// TURN 0
+function startGame() {
+  const { code } = gameState
+  socket.emit('startGame', { code });
+}
+
+// TURN 1-3
+
+// STUFF ----
 
 
 function getPlayerName() {

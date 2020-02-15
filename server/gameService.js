@@ -36,8 +36,15 @@ function joinRoom(socket, name, roomCode) {
   room.players.push({id: socket.id, name})
 }
 
+function startGame(roomCode) {
+  const gameState = getRoom(roomCode)
+  gameState.turn = 1
+  return gameState
+}
+
 module.exports = { 
   createRoom,
   joinRoom,
-  getRoom
+  getRoom,
+  startGame
  }
