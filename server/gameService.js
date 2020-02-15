@@ -121,7 +121,10 @@ function endTurnCheck(gameState) {
 }
 
 function levelToMultiplier(lv) {
-  return lv/5
+  if (lv >= 5) {
+    return lv / 5
+  }
+  return lv / (lv + 1)
 }
 
 
@@ -131,5 +134,7 @@ module.exports = {
   getRoom,
   startGame,
   invest, 
+  levelToMultiplier,
+  randomLevel,
   endTurnCheck
 }
