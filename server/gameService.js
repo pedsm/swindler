@@ -49,7 +49,7 @@ function createInvestor(player) {
     id: player.id,
     name: player.name,
     role: "INVESTOR",
-    money: 5000,
+    money: 500,
     investedIn: null
   }
 }
@@ -66,8 +66,9 @@ function createArtist(player) {
 
 // Function to assign artists/investors:
 function assignPlayers(players) {
-  return players.map((player) => {
-    if(Math.random() >= 0.5) {
+  const numberInvestor = Math.ceil(players.length/2)
+  return players.map((player, i) => {
+    if(i < numberInvestor) {
       return createInvestor(player)
     }
     return createArtist(player)

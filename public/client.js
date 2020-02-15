@@ -26,6 +26,20 @@ socket.on("gameState", newState => {
       <h1>Name : ${player.name}</h1>
       <h2>Role : ${player.role}</h2>
       <h3>Balance: £${player.money}</h3>
+      <div>
+        ${(() => {
+          if(player.role == 'ARTIST') {
+            return '';
+          }
+          return gameState.players
+            .filter(artist => artist.role == 'ARTIST')
+            .map((artist => `
+            <div>
+              <h3 onclick="invest('${artist.id}')">${artist.name}</h3>
+            </div>
+            `)).join('')
+        })()}
+      </div>
     `;
   } else {
     main.innerHTML = `<h1>Not yet implemented</h1>`;
@@ -41,6 +55,9 @@ function startGame() {
 }
 
 // TURN 1-3
+function invest(artistId) {
+  console.log(artistId)
+}
 
 // Helpers
 
