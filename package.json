@@ -23,6 +23,7 @@
     "nodemon": "^2.0.2"
   },
   "dependencies": {
+    "@types/socket.io": "^2.1.4",
     "express": "^4.17.1",
     "socket.io": "^2.3.0"
   }
