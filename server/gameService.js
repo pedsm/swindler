@@ -42,6 +42,27 @@ function startGame(roomCode) {
   return gameState
 }
 
+// Player functionalities: 
+
+// Function to create artist:
+function createArtist(player){
+  return {
+    id: player.id,
+    name: player.name,
+    role: "ARTIST",
+    money: 500,
+    lvl: Math.round(Math.random()*10),
+    invested: null
+  }
+}
+
+// Function to assign artists/investors:
+function assignPlayers(players){
+  players.array.forEach(element => {
+    
+  });
+}
+
 module.exports = { 
   createRoom,
   joinRoom,
