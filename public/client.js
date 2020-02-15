@@ -1,4 +1,5 @@
 const main = document.getElementById("main");
+const maxTurns = 5
 let gameState = {};
 let id;
 
@@ -21,7 +22,7 @@ socket.on("gameState", newState => {
     <p>${gameState.players.map(player => player.name).join(",")}</p>
     <input onclick="startGame()" id="startBt" type="submit" value="Start Game"/>
     `;
-  } else if (gameState.turn >= 1 && gameState.turn <= 3) {
+  } else if (gameState.turn >= 1 && gameState.turn <= maxTurns) {
     main.innerHTML = `
       <h3>Turn: ${gameState.turn}</h3>
       <h1>Name : ${player.name}</h1>
@@ -42,6 +43,22 @@ socket.on("gameState", newState => {
         })()}
       </div>
     `;
+  } else if (gameState.turn == maxTurns + 1){
+    main.innerHTML = `
+      <h1>Results of room: ${gameState.code}</h1>
+      <div>
+        ${(() => {
+          return gameState.players
+            .sort((a,b) => b.money - a.money)
+            .map(((player, i) => `
+            <div>
+              <h3>${i+1}:${player.name}</h3>
+              <h4>£ ${player.money}</h4>
+            </div>
+            `)).join('')
+        })()}
+      </div>
+    `
   } else {
     main.innerHTML = `<h1>Not yet implemented</h1>`;
     console.error("I don't know how to render this");
