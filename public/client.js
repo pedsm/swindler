@@ -46,8 +46,6 @@ function getPlayer() {
   return gameState.players.find(player => player.id == id)
 }
 
-
-
 // Pre game stuff
 function getPlayerName() {
   const name = document.getElementById('nameInput').value
