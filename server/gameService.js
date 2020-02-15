@@ -12,6 +12,7 @@ function createRoom() {
   }
   serverState.rooms[roomCode] = {
     players: [], // No players yet
+    code: roomCode,
     turn: 0 // Waiting room
   }
 

@@ -1,4 +1,5 @@
-console.log("Hello I am the client")
+const main = document.getElementById('main');
+let name;
 
 // Let's connect to the server
 var socket = io.connect('/');
@@ -7,12 +8,20 @@ var socket = io.connect('/');
 //   console.log(data);
 // });
 
+socket.on('gameState', (gameState) => {
+  console.table({roomCode: gameState.code, turn: gameState.turn})
+  console.table(gameState.players)
+  if(gameState.turn == 0) {
+    main.innerHTML = `
+    <h1>Room Code:${gameState.code}</h1>
+    <h2>${name}</h2>
+    <p>${gameState.players.map(player => player.name).join('')}</p>
+    `
+  }
 
-// function sendDoge() {
-//  socket.emit('doge', 'dogeeeeee') 
-// }
-// This follwoing line runs the function every 1000ms
-// setInterval(sendDoge, 1000)
+})
+
+
 function getPlayerName() {
   const name = document.getElementById('nameInput').value
   if(name == '' || name == null) {
@@ -23,5 +32,6 @@ function getPlayerName() {
 
 document.getElementById("createRoomBt").addEventListener('click', (e) => {
   console.log('Creating room')
-  socket.emit('createRoom', {name: getPlayerName()})
+  name = getPlayerName()
+  socket.emit('createRoom', {name})
 })
