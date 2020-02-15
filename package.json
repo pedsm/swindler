@@ -1,0 +1,29 @@
+{
+  "name": "swindler",
+  "version": "0.0.1",
+  "description": "A social deception game based on culture and art",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node server/app.js",
+    "dev": "nodemon server/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pedsm/swindler.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pedsm/swindler/issues"
+  },
+  "homepage": "https://github.com/pedsm/swindler#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^2.3.0"
+  }
+}
