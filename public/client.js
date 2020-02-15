@@ -23,12 +23,13 @@ socket.on("gameState", newState => {
     `;
   } else if (gameState.turn >= 1 && gameState.turn <= 3) {
     main.innerHTML = `
+      <h3>Turn: ${gameState.turn}</h3>
       <h1>Name : ${player.name}</h1>
       <h2>Role : ${player.role}</h2>
       <h3>Balance: £${player.money}</h3>
       <div>
         ${(() => {
-          if(player.role == 'ARTIST') {
+          if(player.role == 'ARTIST' || player.investedIn) {
             return '';
           }
           return gameState.players
@@ -57,6 +58,10 @@ function startGame() {
 // TURN 1-3
 function invest(artistId) {
   console.log(artistId)
+  socket.emit('invest', {
+    roomCode: gameState.code,
+    artistId
+  })
 }
 
 // Helpers

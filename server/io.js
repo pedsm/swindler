@@ -2,7 +2,9 @@ const {
   createRoom,
   joinRoom,
   getRoom,
-  startGame
+  startGame,
+  invest,
+  endTurnCheck
 } = require('./gameService')
 const { log } = require('./log')
 
@@ -25,13 +27,21 @@ const setupSocket = (io) => {
       io.to(code).emit('gameState', getRoom(code))
     })
 
-    //TURN 0
-
+    // TURN 0
     socket.on('startGame', ({ code }) => {
       const gameState = startGame(code)
       io.to(code).emit('gameState', gameState)
     })
 
+    // TURN 1
+    socket.on('invest', ({ roomCode, artistId }) => {
+      const gameState = invest(socket.id, roomCode, artistId)
+      io.to(roomCode).emit('gameState', gameState)
+      const nextTurn = endTurnCheck(gameState)
+      if(nextTurn != null) {
+          io.to(roomCode).emit('gameState', nextTurn)
+      }
+    })
 
     socket.on('disconnect', (reason) => {
       log(`Client disconnected because: ${reason}`)
