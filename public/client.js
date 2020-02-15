@@ -35,10 +35,15 @@ socket.on("gameState", newState => {
         return ''
 
       })()}
-      
-      
       </h2>
       <h3>Balance: £${player.money}</h3>
+      <h3>
+      ${(()=>{
+        if (gameState.players.find(player=>player.lvl==0) != null) {
+          return `OI OI There is a SWINDLER in this room`
+        }
+        return ''
+      })()}</h3>
       <div>
         ${(() => {
           if(player.role == 'ARTIST' || player.investedIn) {
