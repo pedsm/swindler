@@ -24,8 +24,8 @@ socket.on("gameState", newState => {
   } else if (gameState.turn >= 1 && gameState.turn <= 3) {
     main.innerHTML = `
       <h1>Name : ${player.name}</h1>
-      <h2>Role : player.role</h2>
-      <h3>Balance: £player.money</h3>
+      <h2>Role : ${player.role}</h2>
+      <h3>Balance: £${player.money}</h3>
     `;
   } else {
     main.innerHTML = `<h1>Not yet implemented</h1>`;

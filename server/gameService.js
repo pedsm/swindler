@@ -39,6 +39,7 @@ function joinRoom(socket, name, roomCode) {
 function startGame(roomCode) {
   const gameState = getRoom(roomCode)
   gameState.turn = 1
+  gameState.players = assignPlayers(gameState.players)
   return gameState
 }
 
@@ -47,7 +48,7 @@ function createInvestor(player) {
   return {
     id: player.id,
     name: player.name,
-    role: "Investor",
+    role: "INVESTOR",
     money: 5000,
     investedIn: null
   }
@@ -60,22 +61,22 @@ function createArtist(player) {
     role: "ARTIST",
     money: 500,
     lvl: Math.round(Math.random() * 10),
-    invested: null
   }
 }
 
 // Function to assign artists/investors:
 function assignPlayers(players) {
-  players.array.forEach(element => {
-
-  });
+  return players.map((player) => {
+    if(Math.random() >= 0.5) {
+      return createInvestor(player)
+    }
+    return createArtist(player)
+  })
 }
 
 module.exports = {
-
   createRoom,
   joinRoom,
   getRoom,
   startGame,
-  createInvestor
 }
