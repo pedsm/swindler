@@ -7,7 +7,7 @@ const serverState = {
 
 function createRoom() {
   const roomCode = getRoomName();
-  if(serverState.rooms[roomCode] != null) {
+  if (serverState.rooms[roomCode] != null) {
     return createRoom()
   }
   serverState.rooms[roomCode] = {
@@ -21,7 +21,7 @@ function createRoom() {
 }
 
 function getRoom(roomCode) {
-  if(serverState.rooms[roomCode] == null) {
+  if (serverState.rooms[roomCode] == null) {
     error(`Room ${roomCode} does not exist`)
     return null
   }
@@ -33,7 +33,7 @@ function joinRoom(socket, name, roomCode) {
   log(`${name}(${socket.id}) joining ${roomCode}`)
   // Join room
   socket.join(roomCode)
-  room.players.push({id: socket.id, name})
+  room.players.push({ id: socket.id, name })
 }
 
 function startGame(roomCode) {
@@ -41,10 +41,21 @@ function startGame(roomCode) {
   gameState.turn = 1
   return gameState
 }
+function createInvestor(player) {
+  return {
+    id: player.id,
+    name: player.name,
+    role: "Investor",
+    money: 5000,
+    investedIn: null
+  }
+}
 
-module.exports = { 
+
+module.exports = {
   createRoom,
   joinRoom,
   getRoom,
-  startGame
- }
+  startGame,
+  createInvestor
+}
