@@ -27,6 +27,17 @@ socket.on("gameState", newState => {
       <h3>Turn: ${gameState.turn}</h3>
       <h1>Name : ${player.name}</h1>
       <h2>Role : ${player.role}</h2>
+      <h2>
+      ${(() => {
+        if (player.role =='ARTIST') {
+          return `Level : ${player.lvl}`
+        } 
+        return ''
+
+      })()}
+      
+      
+      </h2>
       <h3>Balance: £${player.money}</h3>
       <div>
         ${(() => {
