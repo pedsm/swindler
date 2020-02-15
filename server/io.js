@@ -8,6 +8,8 @@ const { log } = require('./log')
 
 const setupSocket = (io) => {
   io.on('connection', (socket) => {
+    socket.emit('setId', { id: socket.id })
+
     log(`User ${socket.id} has connected`)
     socket.on('createRoom', ({name}) => {
       log(`Creating room for ${name}`)
