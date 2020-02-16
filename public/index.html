@@ -3,6 +3,9 @@
 <head>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
   <link href="/style.css" rel="stylesheet" />
+  <title>Codename: Swindler</title>
+  <link rel="icon" href="/favicon.png">
+  
 </head>
 
 <body>
@@ -12,15 +15,14 @@
       Codename: Swindler
     </h1>
 
-    <h1>🎭</h1>
-    <p>Enter your name:</p>
-    <input id="nameInput" type="text" placeholder="Name..." />
+    <h1 class = "icon">🎭</h1>
+    <input id="nameInput" type="text" placeholder="Name..." required/>
     <br>
-    <input id="createRoomBt" type="submit" value="Create room">
+    <input id="createRoomBt" type="submit" value="Create Room">
     <br>
     <input id="codeInput" type="text" placeholder="Room Code..." />
     <br>
-    <input id="joinRoomBt" type="submit" value="Join room">
+    <input id="joinRoomBt" type="submit" value="Join Room">
   </main>
   <script src="/client.js"></script>
 

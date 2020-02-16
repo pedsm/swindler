@@ -52,7 +52,7 @@ socket.on("gameState", newState => {
       <h3>
       ${(()=>{
         if (gameState.players.find(player=>player.lvl==0) != null) {
-          return `OI OI There is a SWINDLER in this room`
+          return `⚠️There is a Swindler in this room 👀👀..`
         }
         return ''
       })()}</h3>

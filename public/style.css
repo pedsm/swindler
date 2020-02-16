@@ -1,5 +1,7 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+
 * {
-  font-family: sans-serif;
+  font-family: 'Roboto', sans-serif;';
   color: #333;
 }
 
@@ -20,4 +22,14 @@ input {
   border: 1px solid lightgray;
   width: 100%;
   margin: 10px auto;
+}
+
+.icon {
+  font-size: 100px;
+}
+
+
+input {
+  text-align: center;
+  font-size: 20px;
 }
