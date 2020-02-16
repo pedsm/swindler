@@ -22,8 +22,10 @@ function createRoom() {
 }
 
 function joinRoom(socket, name, roomCode) {
-  
-  const room = getRoom(roomCode.toUpperCase())
+  const room = getRoom(roomCode)
+  if(room == null) {
+    return
+  }
   log(`${name}(${socket.id}) joining ${roomCode}`)
   // Join room
   socket.join(roomCode)

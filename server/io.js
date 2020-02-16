@@ -21,10 +21,11 @@ const setupSocket = (io) => {
     })
 
     socket.on('joinRoom', ({name, code}) => {
-      log(`${name} is joining room ${code}`)
-      joinRoom(socket, name, code)
-      socket.emit('gameState', getRoom(code))
-      io.to(code).emit('gameState', getRoom(code))
+      const roomCode = code.toUpperCase()
+      log(`${name} is joining room ${roomCode}`)
+      joinRoom(socket, name, roomCode)
+      socket.emit('gameState', getRoom(roomCode))
+      io.to(roomCode).emit('gameState', getRoom(roomCode))
     })
 
     // TURN 0
