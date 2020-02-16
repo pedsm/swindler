@@ -47,7 +47,7 @@ socket.on("gameState", newState => {
 
       })()}
       </h2>
-      <h3>Balance: £${player.money}</h3>
+      <h3>Balance: £${formatMoney(player.money)}</h3>
       <h3>
       ${(()=>{
         if (gameState.players.find(player=>player.lvl==0) != null) {
@@ -78,9 +78,9 @@ socket.on("gameState", newState => {
           return gameState.players
             .sort((a,b) => b.money - a.money)
             .map(((player, i) => `
-            <div>
+            <div class="player">
               <h3>${i+1}:${player.name}</h3>
-              <h4>£ ${player.money}</h4>
+              <h4>£ ${formatMoney(player.money)}</h4>
             </div>
             `)).join('')
         })()}
@@ -109,6 +109,10 @@ function invest(artistId) {
 }
 
 // Helpers
+
+function formatMoney(money) {
+  return Math.round(money*100)/100
+}
 
 function getPlayer() {
   return gameState.players.find(player => player.id == id);
