@@ -85,7 +85,6 @@ function createArtist(player) {
 }
 
 function randomLevel() {
-  return 0
   return Math.round(Math.random() * 10)
 }
 
