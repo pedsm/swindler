@@ -62,6 +62,7 @@ function createInvestor(player) {
     name: player.name,
     role: "INVESTOR",
     money: 1000,
+    prevMoney: null,
     company: fakeCompany,
     investedIn: null
   }
@@ -73,6 +74,7 @@ function createArtist(player) {
     name: player.name,
     role: "ARTIST",
     money: 0,
+    prevMoney: null,
     lvl: randomLevel()
   }
 }
@@ -114,6 +116,10 @@ function endTurnCheck(gameState) {
     const artist = getPlayer(gameState, inv.investedIn)
     const moneyInvested = inv.money
     const returnOnInvestment = inv.money * levelToMultiplier(artist.lvl)
+    // Log old money counts for next day what?
+    inv.prevMoney = inv.money
+    artist.prevMoney = artist.money
+    // Calculate new money
     inv.money = returnOnInvestment
     artist.money += moneyInvested
     inv.investedIn = null
