@@ -31,7 +31,11 @@ function joinRoom(socket, name, roomCode) {
   if (room == null) {
     return
   }
-  log(`${name}(${socket.id}) joining ${roomCode}`)
+  if(room.turn > 0) {
+    error(`${name} can't join ongoing room: ${roomCode}`)
+    log(`${name}(${socket.id}) joining ${roomCode}`)
+    return
+  }
   // Join room
   socket.join(roomCode)
   room.players.push({ id: socket.id, name })  // We push a object with a socket id and a name in players  
