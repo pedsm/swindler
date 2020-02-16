@@ -32,12 +32,16 @@ socket.on("gameState", newState => {
       
       <h1> ${(()=> {
         if (player.role == 'ARTIST') {
-          return getEmoji(player.id)
+          return getJob(player.id).emoji
         } return ''
       }) ()} 
-      ${player.name}
+      ${player.name} 
       </h1>
-      <h2>Role : ${player.role}</h2>
+      <h2>${(()=> {
+        if (player.role == 'ARTIST') {
+          return getJob(player.id).job
+        } return player.role
+      }) ()} </h2>
       <h2>
       ${(() => {
         if (player.role =='ARTIST') {
@@ -63,7 +67,7 @@ socket.on("gameState", newState => {
             .filter(artist => artist.role == 'ARTIST')
             .map((artist => `
             <div class="player">
-              <h3 onclick="invest('${artist.id}')">${getEmoji(artist.id)}${artist.name}</h3>
+              <h3 onclick="invest('${artist.id}')">${getJob(artist.id).emoji}${artist.name}</h3>
             </div>
             `)).join('')
         })()}
@@ -113,11 +117,58 @@ function getPlayer() {
   return gameState.players.find(player => player.id == id);
 }
 
-function getEmoji (id) {
+function getJob (id) {
   const rot = id.charCodeAt(0);
-  const emojis = ["🤡","🎨", "🎬", "🎤", "🎧", "🎼", "🎹","🥁", "🎷","🎺", "🎸","🎻" ]
-  const emoji = emojis[rot % emojis.length];
-  return emoji
+  const jobs  = [{
+    emoj: "🤡",
+    job: "Birthday Clown"
+    },
+    {
+      emoji: "🎨",
+      job: "Painter"
+    },
+    {
+      emoji: "🎬",
+      job: "Film Director"
+    },
+    {
+      emoji: "🎤",
+      job: "Singer"
+    },
+    {
+      emoji: "🎧",
+      job: "Techno DJ"
+    },
+    {
+      emoji: "🎼",
+      job: "Composer"
+    },
+    {
+      emoji: "🎹",
+      job: "Pianist"
+    },
+    {
+      emoji: "🥁",
+      job: "Drummer"
+    },
+    {
+      emoji: "🎷",
+      job: "Saxophonist"
+    },
+    {
+      emoji: "🎺",
+      job: "Trumpeter"
+    },
+    {
+      emoji: "🎸",
+      job: "Guitarist"
+    },
+    {
+      emoji: "🎻",
+      job: "Violinist"
+    }]
+  const job = jobs[rot % jobs.length];
+  return job
 }
 
 // Pre game stuff
