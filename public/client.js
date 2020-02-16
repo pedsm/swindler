@@ -11,6 +11,7 @@ socket.on("setId", obj => {
 
 socket.on("gameState", newState => {
   gameState = newState;
+  window.navigator.vibrate(200)
   const player = getPlayer();
   console.log("Receiving game state");
   console.table({ roomCode: gameState.code, turn: gameState.turn });
