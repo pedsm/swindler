@@ -19,13 +19,24 @@ socket.on("gameState", newState => {
     main.innerHTML = `
     <h1>Room Code: ${gameState.code}</h1>
     <h2>${player.name}</h2>
-    <p>${gameState.players.map(player => player.name).join(",")}</p>
+    <p>${gameState.players.map(player => `
+      <div class="player">
+      <p>💷${player.name}</p>
+      </div>
+    `).join("")}</p>
     <input onclick="startGame()" id="startBt" type="submit" value="Start Game"/>
     `;
   } else if (gameState.turn >= 1 && gameState.turn <= maxTurns) {
     main.innerHTML = `
       <h3>Turn: ${gameState.turn}</h3>
-      <h1>Name : ${player.name}</h1>
+      
+      <h1> ${(()=> {
+        if (player.role == 'ARTIST') {
+          return getEmoji(player.id)
+        } return ''
+      }) ()} 
+      ${player.name}
+      </h1>
       <h2>Role : ${player.role}</h2>
       <h2>
       ${(() => {
@@ -51,8 +62,8 @@ socket.on("gameState", newState => {
           return gameState.players
             .filter(artist => artist.role == 'ARTIST')
             .map((artist => `
-            <div>
-              <h3 onclick="invest('${artist.id}')">${artist.name}</h3>
+            <div class="player">
+              <h3 onclick="invest('${artist.id}')">${getEmoji(artist.id)}${artist.name}</h3>
             </div>
             `)).join('')
         })()}
@@ -100,6 +111,13 @@ function invest(artistId) {
 
 function getPlayer() {
   return gameState.players.find(player => player.id == id);
+}
+
+function getEmoji (id) {
+  const rot = id.charCodeAt(0);
+  const emojis = ["🤡","🎨", "🎬", "🎤", "🎧", "🎼", "🎹","🥁", "🎷","🎺", "🎸","🎻" ]
+  const emoji = emojis[rot % emojis.length];
+  return emoji
 }
 
 // Pre game stuff

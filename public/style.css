@@ -2,3 +2,22 @@
   font-family: sans-serif;
   color: #333;
 }
+
+main {
+  width: 100%;
+  text-align: center;
+}
+
+input {
+  width: 90%;
+  padding: 10px;
+  margin: 10px 0px;
+  border-radius: 10px;
+  border: 1px solid lightgray;
+}
+
+.player {
+  border: 1px solid lightgray;
+  width: 100%;
+  margin: 10px auto;
+}
