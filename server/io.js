@@ -4,6 +4,8 @@ const {
   getRoom,
   startGame,
   invest,
+  getPlayerRoom,
+  removeFromRoom,
   endTurnCheck
 } = require('./gameService')
 const { log } = require('./log')
@@ -45,6 +47,13 @@ const setupSocket = (io) => {
     })
 
     socket.on('disconnect', (reason) => {
+      // Find pleb and remove him
+      const roomCode = getPlayerRoom(socket.id)
+      if(roomCode != null) {
+        log(`Pleb left room:${roomCode}`)
+        const gameState = removeFromRoom(socket.id, roomCode)
+        io.to(roomCode).emit('gameState', gameState)
+      }
       log(`Client disconnected because: ${reason}`)
     })
     
