@@ -50,7 +50,7 @@ socket.on("gameState", newState => {
       })()}
       </h2>
       <h3>Balance: £${formatMoney(player.money)}${
-        player.prevMoney ? ` (£${formatMoney(player.money -  player.prevMoney)}) money ${player.money - player.prevMoney > 0 ? 'gained': 'lost'} from last round`: ''
+          player.prevMoney ? ` (£${formatMoney(player.money -  player.prevMoney)}) money ${player.money - player.prevMoney > 0 ? 'gained': 'lost'} from last round`: ''
       }</h3>
       <h3>
       ${(()=>{
@@ -74,7 +74,7 @@ socket.on("gameState", newState => {
         })()}
       </div>
     `;
-  } else if (gameState.turn == maxTurns + 1){
+  } else {
     main.innerHTML = `
       <h1>Results of room: ${gameState.code}</h1>
       <div>
@@ -90,11 +90,7 @@ socket.on("gameState", newState => {
         })()}
       </div>
     `
-  } else {
-    main.innerHTML = `<h1>Not yet implemented</h1>`;
-    console.error("I don't know how to render this");
-    console.log(gameState);
-  }
+  } 
 });
 
 // TURN 0
@@ -188,7 +184,7 @@ function getPlayerName() {
   if (name == "" || name == null) {
     throw Error("You need a name");
   }
-  return name;
+  return name;  
 }
 
 function getRoomCode() {

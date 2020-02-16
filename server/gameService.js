@@ -1,35 +1,40 @@
 const { getRoomName } = require('./roomGen')
 const { log, error } = require('./log')
-const faker = require('faker');
+const faker = require('faker')
 
 const serverState = {
   rooms: {}
 }
 
+// Createas a room, get roomCode from getRoomName function
 function createRoom() {
   const roomCode = getRoomName();
-  if (serverState.rooms[roomCode] != null) {
+  if (serverState.rooms[roomCode] != null) {  // If not null, create it again
     return createRoom()
   }
+
+  // Server state is a const with a rooms hash inside
+  // Set that rooms hash, to have a players array, a code and a turn number
   serverState.rooms[roomCode] = {
     players: [], // No players yet
     code: roomCode,
-    turn: 0 // Waiting room
+    turn: 0, // Waiting room
   }
 
   log(`Room: ${roomCode} has been created`)
   return roomCode
 }
 
+// Function to join the room, pass the socket, name, and roomCode
 function joinRoom(socket, name, roomCode) {
   const room = getRoom(roomCode)
-  if(room == null) {
+  if (room == null) {
     return
   }
   log(`${name}(${socket.id}) joining ${roomCode}`)
   // Join room
   socket.join(roomCode)
-  room.players.push({ id: socket.id, name })
+  room.players.push({ id: socket.id, name })  // We push a object with a socket id and a name in players  
 }
 
 // utils
@@ -46,7 +51,7 @@ function getPlayer(gameState, playerId) {
 // room logic
 
 
-// TURN 0 
+// TURN 0  - we get the game state, we assignPlayersm passing the players array, and return the state
 function startGame(roomCode) {
   const gameState = getRoom(roomCode)
   gameState.turn = 1
@@ -83,35 +88,44 @@ function randomLevel() {
   return Math.round(Math.random() * 10)
 }
 
-// Function to assign artists/investors:
+// Function to assign artists/investors - I wrote this so no comments
 function assignPlayers(players) {
-  const numberInvestor = Math.ceil(players.length/2)
+  const numberInvestor = Math.ceil(players.length / 2)
   return players.map((player, i) => {
-    if(i < numberInvestor) {
+    if (i < numberInvestor) {
       return createInvestor(player)
     }
     return createArtist(player)
   })
 }
 
-// TURN 1 - 3
+// TURN 1 - 3 - takes a playerId, roomCode, and artistId
 function invest(playerId, roomCode, artistId) {
-  log(`${playerId} is investing in ${artistId}`)
-  const gameState = getRoom(roomCode)
-  const investor = getPlayer(gameState, playerId)
-  investor.investedIn = artistId
-  return gameState
+  log(`${playerId} is investing in ${artistId}`)   //player Id is investing in artist id. 
+  const gameState = getRoom(roomCode)              //we get the state.
+  const investor = getPlayer(gameState, playerId)  //we get the investor and the state
+  investor.investedIn = artistId                   //we set the investedIn var to the artistID
+  return gameState                                 //and we return the state
 }
 
 function endTurnCheck(gameState) {
+  if(gameState.turn == 0 || gameState.turn == 6) {
+    return
+  }
   const investorLeft = gameState.players
     .filter(inv => inv.role == "INVESTOR")
     .filter(inv => inv.investedIn == null)
+    .filter(inv => inv.money != 0) // Get the list of Investors that did not invested and are not bankrupt
   if (investorLeft.length != 0) {
     return null
-  }
+  }                                        // Return null if there are still inventors that did not invested
+  return endTurn(gameState);
+}
+
+function endTurn(gameState) {
+
   log('Turn has ended all investors have finished')
-  const investors = gameState.players.filter(p => p.role == "INVESTOR")
+  const investors = gameState.players.filter(p => p.role == "INVESTOR").filter(inv => inv.money != 0) // The way we calculate the money for investors and artists
   investors.forEach((inv) => {
     const artist = getPlayer(gameState, inv.investedIn)
     const moneyInvested = inv.money
@@ -124,7 +138,7 @@ function endTurnCheck(gameState) {
     artist.money += moneyInvested
     inv.investedIn = null
   })
-  const artists = gameState.players.filter(p => p.role == 'ARTIST')
+  const artists = gameState.players.filter(p => p.role == 'ARTIST')  // Setting a random level for the Artists
   artists.forEach((art) => {
     art.lvl = randomLevel()
   })
@@ -140,8 +154,8 @@ function levelToMultiplier(lv) {
 }
 
 function getPlayerRoom(playerId) {
-  for([key, room] of Object.entries(serverState.rooms)) {
-    if(room.players.find(pl => pl.id == playerId) != null) {
+  for ([key, room] of Object.entries(serverState.rooms)) {
+    if (room.players.find(pl => pl.id == playerId) != null) {
       return room.code
     }
   }
@@ -156,16 +170,28 @@ function removeFromRoom(playerId, roomCode) {
   return room
 }
 
+function tickAllGames(io) {
+  Object.keys(serverState.rooms).forEach((code) => {
+    const room = getRoom(code)
+    const newRoom = endTurnCheck(room)
+    if(newRoom == null) {
+      return
+    }
+    io.to(newRoom.code).emit('gameState', newRoom)
+  })
+}
+
 
 module.exports = {
   createRoom,
   joinRoom,
   getRoom,
   startGame,
-  invest, 
+  invest,
   levelToMultiplier,
   randomLevel,
-  getPlayerRoom,
   removeFromRoom,
+  getPlayerRoom,
+  tickAllGames,
   endTurnCheck
 }
