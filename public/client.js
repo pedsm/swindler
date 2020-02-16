@@ -58,14 +58,14 @@ socket.on("gameState", newState => {
       })()}</h3>
       <div>
         ${(() => {
-          if(player.role == 'ARTIST' || player.investedIn) {
+          if(player.role == 'ARTIST') {
             return '';
           }
           return gameState.players
             .filter(artist => artist.role == 'ARTIST')
             .map((artist => `
-            <div class="player">
-              <h3 onclick="invest('${artist.id}')">${getJob(artist.id).emoji}${artist.name}</h3>
+            <div onclick="invest('${artist.id}')" class="player ${player.investedIn == artist.id ? 'selected' : ''}">
+              <h3>${getJob(artist.id).emoji}${artist.name}</h3>
             </div>
             `)).join('')
         })()}
