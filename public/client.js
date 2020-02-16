@@ -112,7 +112,7 @@ function getPlayer() {
   return gameState.players.find(player => player.id == id);
 }
 
-function getEmoji () {
+function getEmoji (id) {
   const rot = id.charCodeAt(0);
   const emojis = ["🤡","🎨", "🎬", "🎤", "🎧", "🎼", "🎹","🥁", "🎷","🎺", "🎸","🎻" ]
   const emoji = emojis[rot % emojis.length];
