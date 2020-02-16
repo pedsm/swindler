@@ -7,6 +7,7 @@ const {
   invest,
   getPlayerRoom,
   removeFromRoom,
+  tickAllGames,
   endTurnCheck
 } = require('./gameService')         // require the custom gameService .js
 const { log } = require('./log')     // and log
@@ -46,10 +47,10 @@ const setupSocket = (io) => {
     socket.on('invest', ({ roomCode, artistId }) => {
       const gameState = invest(socket.id, roomCode, artistId) // call the invest function 
       io.to(roomCode).emit('gameState', gameState) // do the investing functionang change state
-      const nextTurn = endTurnCheck(gameState)    // do the end turn check 
-      if(nextTurn != null) {
-          io.to(roomCode).emit('gameState', nextTurn)  // emmit a nextTurn game state if the nextTurn is not null
-      }
+      // const nextTurn = endTurnCheck(gameState)    // do the end turn check 
+      // if(nextTurn != null) {
+      //     io.to(roomCode).emit('gameState', nextTurn)  // emmit a nextTurn game state if the nextTurn is not null
+      // }
     })
 
     socket.on('disconnect', (reason) => {
@@ -62,6 +63,10 @@ const setupSocket = (io) => {
       }
       log(`Client disconnected because: ${reason}`)
     })
+
+    setInterval(() => {
+      tickAllGames(io)
+    }, 3000)
     
   });
 }

@@ -18,7 +18,7 @@ function createRoom() {
   serverState.rooms[roomCode] = {
     players: [], // No players yet
     code: roomCode,
-    turn: 0 // Waiting room
+    turn: 0, // Waiting room
   }
 
   log(`Room: ${roomCode} has been created`)
@@ -28,7 +28,7 @@ function createRoom() {
 // Function to join the room, pass the socket, name, and roomCode
 function joinRoom(socket, name, roomCode) {
   const room = getRoom(roomCode)
-  if(room == null) {
+  if (room == null) {
     return
   }
   log(`${name}(${socket.id}) joining ${roomCode}`)
@@ -90,9 +90,9 @@ function randomLevel() {
 
 // Function to assign artists/investors - I wrote this so no comments
 function assignPlayers(players) {
-  const numberInvestor = Math.ceil(players.length/2)
+  const numberInvestor = Math.ceil(players.length / 2)
   return players.map((player, i) => {
-    if(i < numberInvestor) {
+    if (i < numberInvestor) {
       return createInvestor(player)
     }
     return createArtist(player)
@@ -109,6 +109,9 @@ function invest(playerId, roomCode, artistId) {
 }
 
 function endTurnCheck(gameState) {
+  if(gameState.turn == 0 || gameState.turn == 6) {
+    return
+  }
   const investorLeft = gameState.players
     .filter(inv => inv.role == "INVESTOR")
     .filter(inv => inv.investedIn == null)
@@ -116,6 +119,10 @@ function endTurnCheck(gameState) {
   if (investorLeft.length != 0) {
     return null
   }                                        // Return null if there are still inventors that did not invested
+  return endTurn(gameState);
+}
+
+function endTurn(gameState) {
 
   log('Turn has ended all investors have finished')
   const investors = gameState.players.filter(p => p.role == "INVESTOR").filter(inv => inv.money != 0) // The way we calculate the money for investors and artists
@@ -147,8 +154,8 @@ function levelToMultiplier(lv) {
 }
 
 function getPlayerRoom(playerId) {
-  for([key, room] of Object.entries(serverState.rooms)) {
-    if(room.players.find(pl => pl.id == playerId) != null) {
+  for ([key, room] of Object.entries(serverState.rooms)) {
+    if (room.players.find(pl => pl.id == playerId) != null) {
       return room.code
     }
   }
@@ -163,16 +170,28 @@ function removeFromRoom(playerId, roomCode) {
   return room
 }
 
+function tickAllGames(io) {
+  Object.keys(serverState.rooms).forEach((code) => {
+    const room = getRoom(code)
+    const newRoom = endTurnCheck(room)
+    if(newRoom == null) {
+      return
+    }
+    io.to(newRoom.code).emit('gameState', newRoom)
+  })
+}
+
 
 module.exports = {
   createRoom,
   joinRoom,
   getRoom,
   startGame,
-  invest, 
+  invest,
   levelToMultiplier,
   randomLevel,
   removeFromRoom,
   getPlayerRoom,
+  tickAllGames,
   endTurnCheck
 }
