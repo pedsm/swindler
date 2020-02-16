@@ -25,7 +25,16 @@ socket.on("gameState", newState => {
   } else if (gameState.turn >= 1 && gameState.turn <= maxTurns) {
     main.innerHTML = `
       <h3>Turn: ${gameState.turn}</h3>
-      <h1>Name : ${player.name}</h1>
+
+      
+      
+      <h1> ${(()=> {
+        if (player.role == 'ARTIST') {
+          return getEmoji(player.id)
+        } return ''
+      }) ()} 
+      ${player.name}
+      </h1>
       <h2>Role : ${player.role}</h2>
       <h2>
       ${(() => {
@@ -101,6 +110,13 @@ function invest(artistId) {
 
 function getPlayer() {
   return gameState.players.find(player => player.id == id);
+}
+
+function getEmoji () {
+  const rot = id.charCodeAt(0);
+  const emojis = ["🤡","🎨", "🎬", "🎤", "🎧", "🎼", "🎹","🥁", "🎷","🎺", "🎸","🎻" ]
+  const emoji = emojis[rot % emojis.length];
+  return emoji
 }
 
 // Pre game stuff
