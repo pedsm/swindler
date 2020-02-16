@@ -49,7 +49,9 @@ socket.on("gameState", newState => {
         return ''
       })()}
       </h2>
-      <h3>Balance: £${formatMoney(player.money)}</h3>
+      <h3>Balance: £${formatMoney(player.money)}${
+        player.prevMoney ? ` (£${formatMoney(player.money -  player.prevMoney)}) money ${player.money - player.prevMoney > 0 ? 'gained': 'lost'} from last round`: ''
+      }</h3>
       <h3>
       ${(()=>{
         if (gameState.players.find(player=>player.lvl==0) != null) {
