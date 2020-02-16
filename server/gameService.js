@@ -1,5 +1,6 @@
 const { getRoomName } = require('./roomGen')
 const { log, error } = require('./log')
+const faker = require('faker');
 
 const serverState = {
   rooms: {}
@@ -52,11 +53,13 @@ function startGame(roomCode) {
 
 // Player functionalities: 
 function createInvestor(player) {
+  const fakeCompany = faker.company.companyName();
   return {
     id: player.id,
     name: player.name,
     role: "INVESTOR",
     money: 1000,
+    company: fakeCompany,
     investedIn: null
   }
 }
