@@ -188,7 +188,7 @@ function getPlayerName() {
   if (name == "" || name == null) {
     throw Error("You need a name");
   }
-  return name;
+  return name;  
 }
 
 function getRoomCode() {
