@@ -1,14 +1,50 @@
 # swindler
+A social deception game based on culture and art.  You get to be a representative investor of a company, which has the only goal of generating as much profit as posible, or you get to be an artist, with a skill level that changes every turn.  The Artist's level affects the amount of profit gained by the investor. 
 
-<h3> Description </h3>
-A social deception game based on culture and art. You get to be an representative investor of a company, which has the only goal of generating as much profit as posible, or you get to be an artist, with different a skill level that can bring the price of your art higher or lower. 
+![Logo](public/favicon.png) 
 
-<h3> Gameplay </h3>
-To start things off, someone would reatea a room and provide you with a room code so you can join the game. After the game has been started, everyone would get assigned a role (investor/artist), a starting buget, a level and a class for the artists, and a company for the investors. 
-The main objective of the game is to make as much money as possible.
-<h4> Artists </h4>
-Artists have to persuade investors into making the decisions of financing their art. The artists keeps all of the money that he gets from the investor.
-<h4> Investors </h4>
-Investors have to make the best investment choice based on the return that they are going to get from the investment. The profit is calculated based on the artists skill level. (1-10 scale, 10->double the money, 1->half of your money back)
-<h4> There is a swindler! </h4> 
-An artist with a skill level of 0 is defined as a swindler. If any investor chooses to invest money into the swindler, he loses all of his balance and automatically loses the game. 
+## How to play 
+At the start of the game, the first player joining the server needs to create a room. Other players need to enter the Room Code give to the first player in order to join the game. 
+
+Once all players are in the room. Press Start Game. 
+
+![Waiting Room](waitingPage-screenshot.png)
+
+#### The game's objective is to finish the game with the highest balance. 
+
+Everyone gets assigned a role (investor/artist), a starting buget, a level, a class for the artists, and a company for the investors.
+
+
+![Investor](Investor-screenshot.png)
+![Artist](Artist-screenshot.png)
+
+
+### If an Artist's level is 0 then he is a swindler. Players will know that there is a swindler in the room. 
+
+Artists have to persuade investors into making the decision of financing their art. The artists keeps all of the money that they get from the investor. 
+
+After all investments are made, players move to the next turn and so on until the fifth and final turn. 
+
+Results then get announced with players ranked from highest to lowest balance. 
+
+Happy Swindling ! 
+
+## Available Scripts 
+
+```
+npm start
+``` 
+
+Runs the application locally. Open http://localhost:3000 to view the application. 
+
+
+``` 
+npm run dev
+```
+Runs the application in development mode. 
+
+
+
+## Environments
+
+ -  [Production](https://codename-swindler.herokuapp.com/)
