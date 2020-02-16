@@ -19,7 +19,11 @@ socket.on("gameState", newState => {
     main.innerHTML = `
     <h1>Room Code: ${gameState.code}</h1>
     <h2>${player.name}</h2>
-    <p>${gameState.players.map(player => player.name).join(",")}</p>
+    <p>${gameState.players.map(player => `
+      <div class="player">
+      <p>💷${player.name}</p>
+      </div>
+    `).join("")}</p>
     <input onclick="startGame()" id="startBt" type="submit" value="Start Game"/>
     `;
   } else if (gameState.turn >= 1 && gameState.turn <= maxTurns) {
