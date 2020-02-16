@@ -43,8 +43,7 @@ socket.on("gameState", newState => {
         if (player.role =='ARTIST') {
           return `Level : ${player.lvl}`
         } 
-        return ''
-
+        return `Company : ${player.company}`
       })()}
       </h2>
       <h3>Balance: £${formatMoney(player.money)}</h3>
