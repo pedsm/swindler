@@ -1,7 +1,5 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
-
 * {
-  font-family: 'Roboto', sans-serif;';
+  font-family: 'Roboto', sans-serif;
   color: #333;
 }
 
@@ -16,6 +14,8 @@ input {
   margin: 10px 0px;
   border-radius: 10px;
   border: 1px solid lightgray;
+  text-align: center;
+  font-size: 20px;
 }
 
 .player {
@@ -28,8 +28,6 @@ input {
   font-size: 100px;
 }
 
-
-input {
-  text-align: center;
-  font-size: 20px;
+.selected {
+  background-color: lightblue;
 }

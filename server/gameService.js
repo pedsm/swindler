@@ -22,8 +22,10 @@ function createRoom() {
 }
 
 function joinRoom(socket, name, roomCode) {
-  
-  const room = getRoom(roomCode.toUpperCase())
+  const room = getRoom(roomCode)
+  if(room == null) {
+    return
+  }
   log(`${name}(${socket.id}) joining ${roomCode}`)
   // Join room
   socket.join(roomCode)
@@ -131,6 +133,23 @@ function levelToMultiplier(lv) {
   return lv / (lv + 1)
 }
 
+function getPlayerRoom(playerId) {
+  for([key, room] of Object.entries(serverState.rooms)) {
+    if(room.players.find(pl => pl.id == playerId) != null) {
+      return room.code
+    }
+  }
+  return null
+}
+
+function removeFromRoom(playerId, roomCode) {
+  log(`Removing ${playerId} from room: ${roomCode}`)
+  const room = getRoom(roomCode)
+  const index = room.players.map(p => p.id).indexOf(playerId)
+  room.players.splice(index, 1)
+  return room
+}
+
 
 module.exports = {
   createRoom,
@@ -140,5 +159,7 @@ module.exports = {
   invest, 
   levelToMultiplier,
   randomLevel,
+  getPlayerRoom,
+  removeFromRoom,
   endTurnCheck
 }
