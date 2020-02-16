@@ -3,6 +3,10 @@ const maxTurns = 5
 let gameState = {};
 let id;
 
+window.onbeforeunload = function(e) {
+  return "If you leave a running game that might ruin the experience for other players. Are you sure you want to leave?";
+};
+
 var socket = io.connect("/");
 
 socket.on("setId", obj => {
