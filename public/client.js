@@ -29,8 +29,6 @@ socket.on("gameState", newState => {
   } else if (gameState.turn >= 1 && gameState.turn <= maxTurns) {
     main.innerHTML = `
       <h3>Turn: ${gameState.turn}</h3>
-
-      
       
       <h1> ${(()=> {
         if (player.role == 'ARTIST') {
@@ -65,8 +63,8 @@ socket.on("gameState", newState => {
           return gameState.players
             .filter(artist => artist.role == 'ARTIST')
             .map((artist => `
-            <div>
-              <h3 onclick="invest('${artist.id}')">${artist.name}</h3>
+            <div class="player">
+              <h3 onclick="invest('${artist.id}')">${getEmoji(artist.id)}${artist.name}</h3>
             </div>
             `)).join('')
         })()}
