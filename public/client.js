@@ -30,24 +30,22 @@ socket.on("gameState", newState => {
     main.innerHTML = `
       <h3>Turn: ${gameState.turn}</h3>
       
-      <h1> ${(()=> {
-        if (player.role == 'ARTIST') {
-          return getJob(player.id).emoji
-        } return ''
-      }) ()} 
-      ${player.name} 
+      <h1>
+      ${getJob(player.id).emoji} ${player.name} 
       </h1>
       <h2>${(()=> {
-        if (player.role == 'ARTIST') {
-          return getJob(player.id).job
-        } return player.role
-      }) ()} </h2>
+        return getJob(player.id).job
+      }) ()} 
+      </h2>
+      <h2>
+        ${player.company ? `(${player.company})` : ''}
+      </h2>
       <h2>
       ${(() => {
         if (player.role =='ARTIST') {
           return `Level : ${player.lvl}`
         } 
-        return `Company : ${player.company}`
+        return ''
       })()}
       </h2>
       <h3>Balance: £${formatMoney(player.money)}</h3>
@@ -82,7 +80,7 @@ socket.on("gameState", newState => {
             .sort((a,b) => b.money - a.money)
             .map(((player, i) => `
             <div class="player">
-              <h3>${i+1}:${player.name}</h3>
+              <h3>${i+1}:${getJob(player.id).emoji}${player.name}</h3>
               <h4>£ ${formatMoney(player.money)}</h4>
             </div>
             `)).join('')
@@ -122,9 +120,15 @@ function getPlayer() {
 }
 
 function getJob (id) {
+  if(gameState.players.find(pl => pl.id == id).role == "INVESTOR") {
+    return {
+      emoji: "🏢",
+      job: "Investor"
+    }
+  }
   const rot = id.charCodeAt(0);
   const jobs  = [{
-    emoj: "🤡",
+    emoji: "🤡",
     job: "Birthday Clown"
     },
     {
