@@ -1,6 +1,6 @@
 const { getRoomName } = require('./roomGen')
 const { log, error } = require('./log')
-const faker = require('faker');
+const faker = require('faker')
 
 const serverState = {
   rooms: {}
@@ -27,13 +27,14 @@ function createRoom() {
 
 // Function to join the room, pass the socket, name, and roomCode
 function joinRoom(socket, name, roomCode) {
-  
-  // roomCode has to be all upperCase
-  const room = getRoom(roomCode.toUpperCase())
+  const room = getRoom(roomCode)
+  if(room == null) {
+    return
+  }
   log(`${name}(${socket.id}) joining ${roomCode}`)
   // Join room
   socket.join(roomCode)
-  room.players.push({ id: socket.id, name })  // We push a object with a socket id and a name in players
+  room.players.push({ id: socket.id, name })  // We push a object with a socket id and a name in players  
 }
 
 // utils
@@ -84,6 +85,7 @@ function createArtist(player) {
 }
 
 function randomLevel() {
+  return 0
   return Math.round(Math.random() * 10)
 }
 
@@ -110,13 +112,14 @@ function invest(playerId, roomCode, artistId) {
 function endTurnCheck(gameState) {
   const investorLeft = gameState.players
     .filter(inv => inv.role == "INVESTOR")
-    .filter(inv => inv.investedIn == null) // Get the list of Investors that did not invested
+    .filter(inv => inv.investedIn == null)
+    .filter(inv => inv.money != 0) // Get the list of Investors that did not invested and are not bankrupt
   if (investorLeft.length != 0) {
     return null
   }                                        // Return null if there are still inventors that did not invested
 
   log('Turn has ended all investors have finished')
-  const investors = gameState.players.filter(p => p.role == "INVESTOR") // The way we calculate the money for investors and artists
+  const investors = gameState.players.filter(p => p.role == "INVESTOR").filter(inv => inv.money != 0) // The way we calculate the money for investors and artists
   investors.forEach((inv) => {
     const artist = getPlayer(gameState, inv.investedIn)
     const moneyInvested = inv.money
@@ -144,6 +147,23 @@ function levelToMultiplier(lv) {
   return lv / (lv + 1)
 }
 
+function getPlayerRoom(playerId) {
+  for([key, room] of Object.entries(serverState.rooms)) {
+    if(room.players.find(pl => pl.id == playerId) != null) {
+      return room.code
+    }
+  }
+  return null
+}
+
+function removeFromRoom(playerId, roomCode) {
+  log(`Removing ${playerId} from room: ${roomCode}`)
+  const room = getRoom(roomCode)
+  const index = room.players.map(p => p.id).indexOf(playerId)
+  room.players.splice(index, 1)
+  return room
+}
+
 
 module.exports = {
   createRoom,
@@ -153,5 +173,7 @@ module.exports = {
   invest, 
   levelToMultiplier,
   randomLevel,
+  removeFromRoom,
+  getPlayerRoom,
   endTurnCheck
 }
